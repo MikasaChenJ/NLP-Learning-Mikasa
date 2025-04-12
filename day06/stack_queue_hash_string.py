@@ -1,3 +1,5 @@
+
+
 # ===== LeetCode 20: 有效的括号 =====
 def is_valid_parentheses(s):
     """
@@ -75,14 +77,35 @@ def group_anagrams(strs):
     """
     哈希 + 排序，分组字母异位词
     """
+    group_dict={}
+    for word in strs:
+        key = ''.join(sorted(word))
+        if key not in group_dict:
+            group_dict[key]=[]
+        group_dict[key].append(word)
+    return list(group_dict.values())
+
+
+
 
 
 
 # ===== LeetCode 239: 滑动窗口最大值 =====
+# nums = [1, 3, -1, -3, 5, 3, 6, 7]，k = 3
 from collections import deque
 
 def max_sliding_window(nums, k):
     """
     双端队列维护窗口最大值
     """
-    pass
+    dq=deque()
+    res=[]
+    for i in range(len(nums)):
+        if dq and dq[0]<i-k+1:
+            dq.popleft()
+        while dq and nums[dq[-1]]<nums[i]:
+            dq.pop()
+        dq.append(i)
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+    return res
